@@ -254,6 +254,48 @@ def _requested_demo_kyc_tool_misuse(applicant_id: str) -> str | None:
     return tool
 
 
+def _pii_leak_enabled(applicant_id: str) -> bool:
+    """
+    Should ``risk_assessment`` inject a synthetic PII leak (bank account) into its output?
+
+    Picked ``risk_assessment`` because it is the **model** node — freeform LLM narrative is the canonical
+    real-world failure mode for PII regurgitation, so it lights up HoneyHive's online evaluators in the
+    same place a production leak would appear.
+
+    Env:
+        PII_LEAK — off if unset / ``0`` / ``false``; ``1`` / ``true`` enables.
+        PII_LEAK_APPLICANT — applicant id filter (default ``kyc_002``); ``*`` / ``any`` / ``all`` matches all.
+    """
+    raw = os.environ.get("PII_LEAK", "").strip().lower()
+    if not raw or raw in ("0", "false", "no", "off"):
+        return False
+    if raw not in ("1", "true", "yes", "on"):
+        return False
+
+    filt_raw = os.environ.get("PII_LEAK_APPLICANT")
+    if filt_raw is None:
+        filt = "kyc_002"
+    else:
+        filt = filt_raw.strip() or "kyc_002"
+    match_all = filt in ("*", "any", "all")
+    return match_all or applicant_id == filt
+
+
+# Synthetic, clearly-labeled "PII" — never use real account/routing numbers in repos.
+_DEMO_PII_BANK_ACCOUNT = "8412-5567-2199"
+_DEMO_PII_BANK_ROUTING = "021-000-021"
+
+
+def _demo_pii_leak_text(applicant_id: str, full_name: str) -> str:
+    """Synthetic PII line appended to the risk_assessment narrative when ``PII_LEAK`` is enabled."""
+    return (
+        "\n\n[demo only — synthetic PII] Linked customer funding account on file: "
+        f"name={full_name!r}, applicant_id={applicant_id!r}, "
+        f"account_number={_DEMO_PII_BANK_ACCOUNT}, routing_number={_DEMO_PII_BANK_ROUTING}. "
+        "This sentence is a scripted leak for HoneyHive evaluator demos and is not produced by the model."
+    )
+
+
 def init_honeyhive() -> HoneyHiveTracer:
     """Initialize HoneyHive tracer + LangChain instrumentation for OTLP exports."""
     global _tracer
@@ -456,6 +498,17 @@ def _build_graph(rest: RestTraceLogger | None = None) -> Any:
                     )
                 if state.get("verbose"):
                     print(f"[risk_assessment] demo simulated misuse span: {misuse}", flush=True)
+
+            applicant_id_local = str(state["application"]["applicant_id"])
+            if _pii_leak_enabled(applicant_id_local):
+                full_name = str(state.get("identity_fields", {}).get("full_name") or
+                                state["application"].get("full_name") or "")
+                body = (body or "") + _demo_pii_leak_text(applicant_id_local, full_name)
+                if state.get("verbose"):
+                    print(
+                        "[risk_assessment] demo PII leak appended (synthetic bank account/routing)",
+                        flush=True,
+                    )
             return body
 
         if rest:

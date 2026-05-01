@@ -51,6 +51,16 @@ KYC_AGENT_SIMULATE_TOOL_MISUSE=1 python -m src.main --applications data/sample_a
 
 Default filter is **`kyc_005`**; set **`KYC_AGENT_SIMULATE_TOOL_MISUSE_APPLICANT=*`** to script every applicant in a batch demo.
 
+## Deterministic PII leak for recordings
+
+Show HoneyHive surfacing a **PII regurgitation** in the **`risk_assessment`** model span:
+
+```bash
+PII_LEAK=1 python -m src.main --applications data/sample_applications.json --id kyc_002
+```
+
+Appends a clearly-labeled `[demo only — synthetic PII]` sentence containing a fake bank account / routing number to the risk-assessment narrative output. Default filter is **`kyc_002`**; widen to all applicants with **`PII_LEAK_APPLICANT=*`**. Numbers are synthetic — do not use real account data.
+
 ## What’s mocked vs. real
 
 | Piece | Mocked | Real |

@@ -74,6 +74,16 @@ KYC_AGENT_SIMULATE_TOOL_MISUSE=1 python -m src.main --applications data/sample_a
 
 Or **`KYC_AGENT_SIMULATE_TOOL_MISUSE_APPLICANT=*`** for every row in batch.
 
+### PII leak demo (`kyc_002`)
+
+Forcing a **synthetic** PII regurgitation in the **`risk_assessment`** model span (the canonical place an LLM would leak account data):
+
+```bash
+PII_LEAK=1 python -m src.main --applications data/sample_applications.json --id kyc_002
+```
+
+Synthetic numbers (`8412-5567-2199` / `021-000-021`) and a **`[demo only — synthetic PII]`** prefix make the leak unambiguous in HoneyHive — perfect for showing a PII evaluator firing on the **`risk_assessment`** event. Default filter is **`kyc_002`**; widen with **`PII_LEAK_APPLICANT=*`**.
+
 ## 7. Optional OTLP (dual export)
 
 ```bash
