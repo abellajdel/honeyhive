@@ -1,3 +1,9 @@
 .env
 fraud-agent/venv
 fraud-agent/.env
+
+# Python bytecode caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
