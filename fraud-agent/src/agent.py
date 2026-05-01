@@ -58,6 +58,41 @@ def _llm_client_kwargs() -> dict[str, Any]:
     return kw
 
 
+_DEMO_POLICY_VIOLATION_TOOLS = frozenset({"freeze_account", "contact_customer"})
+
+
+def _requested_demo_tool_misuse(transaction_id: str) -> str | None:
+    """
+    Scripted forbidden tool spans for deterministic evaluator demos.
+
+    Env:
+        FRAUD_AGENT_SIMULATE_TOOL_MISUSE — off if unset / ``0`` / ``false``;
+            ``1`` / ``true`` selects ``freeze_account``; or ``freeze_account`` / ``contact_customer``.
+        FRAUD_AGENT_SIMULATE_TOOL_MISUSE_TXN — id to match (default ``txn_005``); ``*`` / ``any`` / ``all``
+            matches every transaction.
+    """
+    raw = os.environ.get("FRAUD_AGENT_SIMULATE_TOOL_MISUSE", "").strip().lower()
+    if not raw or raw in ("0", "false", "no", "off"):
+        return None
+    if raw in ("1", "true", "yes", "on"):
+        tool = "freeze_account"
+    elif raw in _DEMO_POLICY_VIOLATION_TOOLS:
+        tool = raw
+    else:
+        return None
+
+    filt_key = os.environ.get("FRAUD_AGENT_SIMULATE_TOOL_MISUSE_TXN")
+    if filt_key is None:
+        filt = "txn_005"
+    else:
+        filt = filt_key.strip()
+
+    match_all = filt in ("*", "any", "all")
+    if not match_all and transaction_id != filt:
+        return None
+    return tool
+
+
 class FraudState(TypedDict, total=False):
     """Graph state for a single triage run."""
 
@@ -381,6 +416,36 @@ def _build_graph(rest: RestTraceLogger | None = None) -> Any:
                 return final.content
             return "risk_scoring stopped after iteration cap"
 
+        def _finalize_risk() -> str:
+            text_local = _run_loop()
+            misuse = _requested_demo_tool_misuse(state["transaction_id"])
+            if misuse:
+                cid = str(tx.get("customer_id", "cust_unknown"))
+                reason = (
+                    "[demo only] scripted policy-violating tool span for evaluator walkthrough; "
+                    "not model output."
+                )
+                if misuse == "freeze_account":
+                    exec_risk_tool(
+                        "freeze_account",
+                        {"customer_id": cid, "reason": reason},
+                    )
+                elif misuse == "contact_customer":
+                    exec_risk_tool(
+                        "contact_customer",
+                        {
+                            "customer_id": cid,
+                            "channel": "email",
+                            "message": reason,
+                        },
+                    )
+                if state.get("verbose"):
+                    print(
+                        f"[risk_scoring] demo simulated tool misuse span: {misuse}",
+                        flush=True,
+                    )
+            return text_local
+
         if rest:
             with rest.span(
                 "risk_scoring",
@@ -388,10 +453,10 @@ def _build_graph(rest: RestTraceLogger | None = None) -> Any:
                 inputs={"transaction": tx, "model": "gpt-4o"},
                 config={"model": "gpt-4o", "provider": "openai", "temperature": 0},
             ) as s:
-                text = _run_loop()
+                text = _finalize_risk()
                 s.outputs = {"risk_assessment": text}
         else:
-            text = _run_loop()
+            text = _finalize_risk()
 
         if state.get("verbose"):
             print(f"[risk_scoring] completed ({len(text)} chars)")

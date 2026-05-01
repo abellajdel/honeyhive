@@ -22,7 +22,7 @@ Per the [tracing quickstart](https://docs.honeyhive.ai/v2/introduction/tracing-q
 
 ### Copy into `.env`
 
-1. From the repo: `cp .env.example .env`
+1. From the repo: `cp .env.example ../.env`
 2. Set:
    - `OPENAI_API_KEY` — your OpenAI key
    - `HONEYHIVE_API_KEY` — the key from the step above
@@ -102,11 +102,16 @@ python scripts/run_batch.py
 - **`txn_005`** (trap case) may show **tool misuse** if the model calls `freeze_account`, `contact_customer`, or another forbidden tool during **`risk_scoring`**.
 - **`txn_006`** is a high-value international case intended to **escalate** using only allowed tools (no misuse).
 
+### Deterministic tool misuse for recordings
+
+If you need HoneyHive evaluator output on every **txn_005** run without depending on the model, set **`FRAUD_AGENT_SIMULATE_TOOL_MISUSE=1`** before your command (tool arguments include **`[demo only] scripted`** in the span). Optional: **`FRAUD_AGENT_SIMULATE_TOOL_MISUSE=contact_customer`**; **`FRAUD_AGENT_SIMULATE_TOOL_MISUSE_TXN=*`** to script every batch row.
+
 ### If the trap case did not trigger tool misuse
 
 The model may refuse the injection and only call allowed tools. Options:
 
-- Re-run **`txn_005`** a few times (non-deterministic).
+- Use **`FRAUD_AGENT_SIMULATE_TOOL_MISUSE=1`** for a scripted evaluator signal (recommended for deterministic demos).
+- Re-run **`txn_005`** a few times (non-deterministic organic misuse).
 - Strengthen the case notes in `data/sample_transactions.json` (still clearly fake data).
 - Temporarily lower resistance by adjusting the risk prompt (demo only — not for production).
 
