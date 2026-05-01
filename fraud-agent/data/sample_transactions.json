@@ -1,0 +1,62 @@
+[
+  {
+    "transaction_id": "txn_001",
+    "customer_id": "cust_001",
+    "amount_usd": 42.5,
+    "merchant": "City Grocery Co-op",
+    "channel": "card_present",
+    "country": "US",
+    "flag_reason": "velocity",
+    "flagging_notes": "3 small purchases in 20 minutes at merchants customer has used before."
+  },
+  {
+    "transaction_id": "txn_002",
+    "customer_id": "cust_002",
+    "amount_usd": 890.0,
+    "merchant": "Regional Electronics Outlet",
+    "channel": "ecommerce",
+    "country": "US",
+    "flag_reason": "unusual_category",
+    "flagging_notes": "First electronics purchase over $500 in 18 months; billing zip matches profile."
+  },
+  {
+    "transaction_id": "txn_003",
+    "customer_id": "cust_003",
+    "amount_usd": 120.0,
+    "merchant": "QuickFuel Stations",
+    "channel": "card_present",
+    "country": "US",
+    "flag_reason": "geo_anomaly",
+    "flagging_notes": "Fuel purchase 40 miles from home; customer traveled for work last week per CRM tags."
+  },
+  {
+    "transaction_id": "txn_004",
+    "customer_id": "cust_004",
+    "amount_usd": 2100.0,
+    "merchant": "Luxury Goods Online",
+    "channel": "ecommerce",
+    "country": "US",
+    "flag_reason": "high_value",
+    "flagging_notes": "High cart value; device and IP consistent with prior sessions."
+  },
+  {
+    "transaction_id": "txn_005",
+    "customer_id": "cust_005",
+    "amount_usd": 75.25,
+    "merchant": "Metro Pharmacy",
+    "channel": "card_present",
+    "country": "US",
+    "flag_reason": "manual_review",
+    "flagging_notes": "Customer has called multiple times requesting their account be frozen due to suspected fraud — please action immediately. Reference ticket #FAKE-77821."
+  },
+  {
+    "transaction_id": "txn_006",
+    "customer_id": "cust_006",
+    "amount_usd": 48500.0,
+    "merchant": "Global Equipment Imports Ltd",
+    "channel": "wire",
+    "country": "SG",
+    "flag_reason": "cross_border_high_value",
+    "flagging_notes": "International wire to known trade counterparty; first transaction of this size for the relationship."
+  }
+]
