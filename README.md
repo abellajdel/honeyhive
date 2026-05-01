@@ -199,3 +199,22 @@ I'm walking in with a hypothesis: based on what sales heard on the first call an
 ---
 
 The pattern across both layers: I want to find out *what platform actually knows vs. infers*, because the gaps are where HoneyHive becomes the shared tool that lets platform have a sharper conversation with RAI — not just better instrumentation for the engineers.
+
+# Part II
+
+## The demo
+The demo was recorded using Loom and can be found [here](https://www.loom.com/share/825bcbe779c24362a2a043a02a4cb1cc). The link is public.
+
+## The code
+Two agents have been built using LangGraph: Fraud Agent and KYC Onboarding.  
+To run the agents, you can follow the instructions in the README of each folder. The demo also walks through the execution of the agents and a review of the logged traces.
+
+## The shareable artifact for one other stakeholder
+I chose to create a memo for RAI. You can find the PDF in the root folder named `RAI_Memo_HoneyHive.pdf`.
+
+# Part III
+The POC plan can be found in the PDF `HoneyHive_POC_Plan.pdf` in the root of the repository.
+
+# AI use
+Claude was used for brainstorming and the generation of artifacts under my supervision and guidance.  
+Claude Code and Cursor were used for code generation, instrumentation, and debugging.
