@@ -79,7 +79,7 @@ The platform team could build this in-house. Realistically, it would take 2–3 
 
 ### What we won't claim
 
-We're not going to put a single percentage on this — "X% faster time to production" or "Y% reduction in incidents" — because we don't have the bank's baseline data and any number we make up will get torn apart in front of the platform team. The framework is here; the inputs are theirs. That's a stronger position than a fabricated headline number, but we can work with the champion to come up with quantifiable metrics for how success looks like.
+We're not going to put a single percentage on this — "X% faster time to production" or "Y% reduction in incidents" — because we don't have the bank's baseline data and any number we make up will get torn apart in front of the platform team. The framework is here; the inputs are theirs. That's a stronger position than a fabricated headline number, but we can work with the champion to come up with quantifiable metrics for  how success looks like.
 
 ## Q2 — How would you explain HoneyHive's workflow?
 
