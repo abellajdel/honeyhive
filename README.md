@@ -50,7 +50,7 @@ Out of scope for now but on the horizon: prompt injection, jailbreaks, model dri
 
 Companies buy tools for one of three reasons: to make money, to save on cost, or to reduce risk. HoneyHive sits primarily in risk reduction — and for this customer, it's exactly the right bucket.
 
-But for this account, risk reduction is the *unlock* for the other two. The bank has 5 agents stuck in pre-production and 45 more queued. RAI is the gate. Until agents pass that gate, the business value of every agent is zero. HoneyHive is the fastest, most defensible path to opening it.
+But for this account, risk reduction is the *unlock* for the other two. The bank has 5 agents at risk of being rolled back by RAI and 45 more queued. RAI is the gate. Until agents pass that gate, the business value of every agent is zero. HoneyHive is the fastest, most defensible path to opening it.
 
 ### The primary story: risk reduction
 
@@ -60,15 +60,15 @@ The cost of *not* having this is asymmetric. One public AI incident at a major b
 
 ### The secondary story: unlock value already committed
 
-Every month an agent doesn't ship is a month its business case isn't realized. The bank has already paid the cost of building these 5 agents — engineering time, infrastructure, integration work. That spend produces zero return until the agents are live.
+Every month an agent doesn't ship is a month its business case isn't realized. The bank has already paid the cost of building these 5 agents — engineering time, infrastructure, integration work. That spend might be at risk if RAI blick the already deployed 5 agents.
 
-HoneyHive shortens the time from "built" to "deployed" by giving platform a credible answer to RAI's questions on day one rather than on month six. Even a modest acceleration — getting the first agent live one quarter sooner — covers the platform's annual contract many times over for any agent with material business value.
+HoneyHive shortens the time from "built" to "deployed" by giving platform a credible answer to RAI's questions on day one rather than on month six. Even a modest acceleration — getting the more agents live one quarter sooner — covers the platform's annual contract many times over for any agent with material business value.
 
 The same logic compounds across the 45 agents to come. Today, every new agent restarts the RAI conversation from scratch. With HoneyHive in place, the conversation becomes "here's the evidence, in the same format as the last one we approved." That's the difference between RAI being a per-agent bottleneck and a per-agent rubber stamp.
 
 ### The build-vs-buy framing
 
-The platform team could build this in-house. Realistically, it would take 2–3 platform engineers 9–12 months to build the trace ingestion, evaluator library, dataset curation, and dashboards — and that's before ongoing maintenance, before keeping up with new frameworks, and before convincing RAI that an internally-built tool is rigorous enough to trust. HoneyHive's ACV (Annual Contract Value) is a fraction of that engineering cost, and the team is freed to work on the gateway, the guardrails service, and the developer experience layer that's actually proprietary to this bank.
+The platform team could build this in-house. Realistically, it would take 2–3 platform engineers 9–12 months to build the trace ingestion, evaluator library, dataset curation, and dashboards — and that's before ongoing maintenance, before keeping up with new frameworks, and before convincing RAI that an internally-built tool is rigorous enough to trust. HoneyHive's ACV (Annual Contract Value) is a fraction of that engineering cost, and the team is freed to  Plus the customer will benefit from the learnings HoneyHive brings from other customers.  
 
 ### How ROI lands with each stakeholder
 
@@ -79,7 +79,7 @@ The platform team could build this in-house. Realistically, it would take 2–3 
 
 ### What we won't claim
 
-We're not going to put a single percentage on this — "X% faster time to production" or "Y% reduction in incidents" — because we don't have the bank's baseline data and any number we make up will get torn apart in front of the platform team. The framework is here; the inputs are theirs. That's a stronger position than a fabricated headline number.
+We're not going to put a single percentage on this — "X% faster time to production" or "Y% reduction in incidents" — because we don't have the bank's baseline data and any number we make up will get torn apart in front of the platform team. The framework is here; the inputs are theirs. That's a stronger position than a fabricated headline number, but we can work with the champion to come up with quantifiable metrics for how success looks like.
 
 ## Q2 — How would you explain HoneyHive's workflow?
 
